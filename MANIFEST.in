@@ -1,0 +1,6 @@
+exclude tests/*
+include volaris/*
+include volaris/*/*
+include volaris/*/*/*
+include volaris/*/*/*/*
+include volaris/*/*/*/*/*
