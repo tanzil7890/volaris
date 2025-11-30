@@ -726,7 +726,7 @@ def get_item_from_obj(config: dict, name_path: str) -> object:
                                             'fit_start_time': '<dataset.kwargs.segments.train.0>',
                                             'instruments': 'csi100',
                                             'start_time': '2008-01-01'},
-                                 'module_path': 'volaris.contrib.data.handler'},
+                                 'module_path': 'volaris.toolkit.data.handler'},
                      'segments': {'test': (Timestamp('2017-01-03 00:00:00'),
                                            Timestamp('2019-04-08 00:00:00')),
                                   'train': (Timestamp('2008-01-02 00:00:00'),

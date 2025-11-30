@@ -257,7 +257,7 @@ def single_with_collect_data_loop(
 
     strategy_config = {
         "class": "FileOrderStrategy",
-        "module_path": "volaris.contrib.strategy.rule_strategy",
+        "module_path": "volaris.toolkit.strategy.rule_strategy",
         "kwargs": {
             "file": orders,
             "trade_range": TradeRangeByTime(

@@ -47,7 +47,7 @@ class PipelineExperimentConfig:
         if not os.path.exists(self.estimator_ex_dir):
             os.makedirs(self.estimator_ex_dir)
         # Get the tuner type
-        self.tuner_module_path = config.get("tuner_module_path", "volaris.contrib.tuner.tuner")
+        self.tuner_module_path = config.get("tuner_module_path", "volaris.toolkit.tuner.tuner")
         self.tuner_class = config.get("tuner_class", "VOlarisTuner")
         # Save the tuner experiment for further view
         tuner_ex_config_path = os.path.join(self.tuner_ex_dir, "tuner_config.yaml")

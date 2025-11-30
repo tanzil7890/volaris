@@ -208,8 +208,8 @@ def find_all_classes(module_path: Union[str, ModuleType], cls: type) -> List[typ
     - `cls` itself is also included
 
         >>> from volaris.data.dataset.handler import DataHandler
-        >>> find_all_classes("volaris.contrib.data.handler", DataHandler)
-        [<class 'volaris.contrib.data.handler.Alpha158'>, <class 'volaris.contrib.data.handler.Alpha158vwap'>, <class 'volaris.contrib.data.handler.Alpha360'>, <class 'volaris.contrib.data.handler.Alpha360vwap'>, <class 'volaris.data.dataset.handler.DataHandlerLP'>]
+        >>> find_all_classes("volaris.toolkit.data.handler", DataHandler)
+        [<class 'volaris.toolkit.data.handler.Alpha158'>, <class 'volaris.toolkit.data.handler.Alpha158vwap'>, <class 'volaris.toolkit.data.handler.Alpha360'>, <class 'volaris.toolkit.data.handler.Alpha360vwap'>, <class 'volaris.data.dataset.handler.DataHandlerLP'>]
 
     TODO:
     - skip import error

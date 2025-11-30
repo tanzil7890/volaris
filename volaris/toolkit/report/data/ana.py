@@ -6,7 +6,7 @@ Here is an example.
 
 .. code-block:: python
 
-    from volaris.contrib.report.data.ana import FeaMeanStd
+    from volaris.toolkit.report.data.ana import FeaMeanStd
     fa = FeaMeanStd(ret_df)
     fa.plot_all(wspace=0.3, sub_figsize=(12, 3), col_n=5)
 

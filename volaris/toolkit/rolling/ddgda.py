@@ -21,7 +21,7 @@ from .base import Rolling
 # LGBM is designed for feature importance & similarity
 LGBM_MODEL = """
 class: LGBModel
-module_path: volaris.contrib.model.gbdt
+module_path: volaris.toolkit.model.gbdt
 kwargs:
     loss: mse
     colsample_bytree: 0.8879
@@ -38,7 +38,7 @@ LGBM_MODEL = yaml.load(LGBM_MODEL, Loader=yaml.FullLoader)
 
 LINEAR_MODEL = """
 class: LinearModel
-module_path: volaris.contrib.model.linear
+module_path: volaris.toolkit.model.linear
 kwargs:
     estimator: ridge
     alpha: 0.05
@@ -265,7 +265,7 @@ class DDGDA(Rolling):
         train_end = "2010-12-31" if self.meta_1st_train_end is None else self.meta_1st_train_end
         test_start = (pd.Timestamp(train_end) + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
         proxy_forecast_model_task = {
-            # "model": "volaris.contrib.model.linear.LinearModel",
+            # "model": "volaris.toolkit.model.linear.LinearModel",
             "dataset": {
                 "class": "volaris.data.dataset.DatasetH",
                 "kwargs": {

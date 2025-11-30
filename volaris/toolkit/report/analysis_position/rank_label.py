@@ -74,8 +74,8 @@ def rank_label_graph(
             .. code-block:: python
 
                 from volaris.data import D
-                from volaris.contrib.evaluate import backtest
-                from volaris.contrib.strategy import TopkDropoutStrategy
+                from volaris.toolkit.evaluate import backtest
+                from volaris.toolkit.strategy import TopkDropoutStrategy
 
                 # backtest parameters
                 bparas = {}

@@ -30,7 +30,7 @@ def score_ic_graph(pred_label: pd.DataFrame, show_notebook: bool = True, **kwarg
             .. code-block:: python
 
                 from volaris.data import D
-                from volaris.contrib.report import analysis_position
+                from volaris.toolkit.report import analysis_position
                 pred_df_dates = pred_df.index.get_level_values(level='datetime')
                 features_df = D.features(D.instruments('csi500'), ['Ref($close, -2)/Ref($close, -1)-1'], pred_df_dates.min(), pred_df_dates.max())
                 features_df.columns = ['label']

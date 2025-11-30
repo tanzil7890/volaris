@@ -68,7 +68,7 @@ class DNNModelPytorch(Model):
         scheduler: Optional[Union[Callable]] = "default",  # when it is Callable, it accept one argument named optimizer
         init_model=None,
         eval_train_metric=False,
-        pt_model_uri="volaris.contrib.model.pytorch_nn.Net",
+        pt_model_uri="volaris.toolkit.model.pytorch_nn.Net",
         pt_model_kwargs={
             "input_dim": 360,
             "layers": (256,),

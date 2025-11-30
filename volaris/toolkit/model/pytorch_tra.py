@@ -413,7 +413,7 @@ class TRAModel(Model):
         return best_score
 
     def fit(self, dataset, evals_result=dict()):
-        assert isinstance(dataset, MTSDatasetH), "TRAModel only supports `volaris.contrib.data.dataset.MTSDatasetH`"
+        assert isinstance(dataset, MTSDatasetH), "TRAModel only supports `volaris.toolkit.data.dataset.MTSDatasetH`"
 
         train_set, valid_set, test_set = dataset.prepare(["train", "valid", "test"])
 
@@ -496,7 +496,7 @@ class TRAModel(Model):
                 json.dump(info, f)
 
     def predict(self, dataset, segment="test"):
-        assert isinstance(dataset, MTSDatasetH), "TRAModel only supports `volaris.contrib.data.dataset.MTSDatasetH`"
+        assert isinstance(dataset, MTSDatasetH), "TRAModel only supports `volaris.toolkit.data.dataset.MTSDatasetH`"
 
         if not self.fitted:
             raise ValueError("model is not fitted yet!")

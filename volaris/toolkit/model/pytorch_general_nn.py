@@ -61,7 +61,7 @@ class GeneralPTNN(Model):
         n_jobs=10,
         GPU=0,
         seed=None,
-        pt_model_uri="volaris.contrib.model.pytorch_gru_ts.GRUModel",
+        pt_model_uri="volaris.toolkit.model.pytorch_gru_ts.GRUModel",
         pt_model_kwargs={
             "d_feat": 6,
             "hidden_size": 64,

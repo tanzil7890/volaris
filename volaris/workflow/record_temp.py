@@ -400,7 +400,7 @@ class PortAnaRecord(ACRecordTemp):
             config = {  # Default config for daily trading
                 "strategy": {
                     "class": "TopkDropoutStrategy",
-                    "module_path": "volaris.contrib.strategy",
+                    "module_path": "volaris.toolkit.strategy",
                     "kwargs": {"signal": "<PRED>", "topk": 50, "n_drop": 5},
                 },
                 "backtest": {

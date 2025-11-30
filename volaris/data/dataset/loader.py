@@ -305,9 +305,9 @@ class NestedDataLoader(DataLoader):
                 nd = NestedDataLoader(
                     dataloader_l=[
                         {
-                            "class": "volaris.contrib.data.loader.Alpha158DL",
+                            "class": "volaris.toolkit.data.loader.Alpha158DL",
                         }, {
-                            "class": "volaris.contrib.data.loader.Alpha360DL",
+                            "class": "volaris.toolkit.data.loader.Alpha360DL",
                             "kwargs": {
                                 "config": {
                                     "label": ( ["Ref($close, -2)/Ref($close, -1) - 1"], ["LABEL0"])

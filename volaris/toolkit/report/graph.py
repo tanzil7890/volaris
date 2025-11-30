@@ -77,7 +77,7 @@ class BaseGraph:
             _graph_module = importlib.import_module("plotly.graph_objs")
             _graph_class = getattr(_graph_module, graph_type)
         except AttributeError:
-            _graph_module = importlib.import_module("volaris.contrib.report.graph")
+            _graph_module = importlib.import_module("volaris.toolkit.report.graph")
             _graph_class = getattr(_graph_module, graph_type)
         return _graph_class(**kwargs)
 

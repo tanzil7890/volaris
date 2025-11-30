@@ -40,7 +40,7 @@ class Rolling:
     .. code-block:: shell
 
         # here is an typical use case of the module.
-        python -m volaris.contrib.rolling.base --conf_path <path to the yaml> run
+        python -m volaris.toolkit.rolling.base --conf_path <path to the yaml> run
 
     **NOTE**
     before running the example, please clean your previous results with following command

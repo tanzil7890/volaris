@@ -176,8 +176,8 @@ def risk_analysis_graph(
                 from volaris.utils.time import Freq
                 from volaris.utils import flatten_dict
                 from volaris.backtest import backtest, executor
-                from volaris.contrib.evaluate import risk_analysis
-                from volaris.contrib.strategy import TopkDropoutStrategy
+                from volaris.toolkit.evaluate import risk_analysis
+                from volaris.toolkit.strategy import TopkDropoutStrategy
 
                 # init volaris
                 volaris.init(provider_uri=<volaris data dir>)

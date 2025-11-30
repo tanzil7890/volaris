@@ -171,7 +171,7 @@ class VOlarisTuner(Tuner):
         if model_space_name is None:
             raise ValueError("Please give the search space of model.")
         model_space = getattr(
-            importlib.import_module(".space", package="volaris.contrib.tuner"),
+            importlib.import_module(".space", package="volaris.toolkit.tuner"),
             model_space_name,
         )
 
@@ -180,7 +180,7 @@ class VOlarisTuner(Tuner):
         if strategy_space_name is None:
             raise ValueError("Please give the search space of strategy.")
         strategy_space = getattr(
-            importlib.import_module(".space", package="volaris.contrib.tuner"),
+            importlib.import_module(".space", package="volaris.toolkit.tuner"),
             strategy_space_name,
         )
 
@@ -189,7 +189,7 @@ class VOlarisTuner(Tuner):
             data_label_space_name = self.tuner_config["data_label"].get("space", None)
             if data_label_space_name is not None:
                 data_label_space = getattr(
-                    importlib.import_module(".space", package="volaris.contrib.tuner"),
+                    importlib.import_module(".space", package="volaris.toolkit.tuner"),
                     data_label_space_name,
                 )
         else:

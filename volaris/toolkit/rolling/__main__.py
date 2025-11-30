@@ -5,12 +5,12 @@ from volaris.utils.mod import find_all_classes
 
 if __name__ == "__main__":
     sub_commands = {}
-    for cls in find_all_classes("volaris.contrib.rolling", Rolling):
+    for cls in find_all_classes("volaris.toolkit.rolling", Rolling):
         sub_commands[cls.__module__.split(".")[-1]] = cls
     # The sub_commands will be like
-    # {'base': <class 'volaris.contrib.rolling.base.Rolling'>, ...}
+    # {'base': <class 'volaris.toolkit.rolling.base.Rolling'>, ...}
     # So the you can run it with commands like command below
-    # - `python -m volaris.contrib.rolling base --conf_path <path to the yaml> run`
+    # - `python -m volaris.toolkit.rolling base --conf_path <path to the yaml> run`
     # - base can be replace with other module names
     auto_init()
     fire.Fire(sub_commands)

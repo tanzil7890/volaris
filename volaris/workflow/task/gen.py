@@ -239,7 +239,7 @@ class RollingGen(TaskGen):
                 DEFAULT_TASK = {
                     "model": {
                         "class": "LGBModel",
-                        "module_path": "volaris.contrib.model.gbdt",
+                        "module_path": "volaris.toolkit.model.gbdt",
                     },
                     "dataset": {
                         "class": "DatasetH",
@@ -247,7 +247,7 @@ class RollingGen(TaskGen):
                         "kwargs": {
                             "handler": {
                                 "class": "Alpha158",
-                                "module_path": "volaris.contrib.data.handler",
+                                "module_path": "volaris.toolkit.data.handler",
                                 "kwargs": {
                                     "start_time": "2008-01-01",
                                     "end_time": "2020-08-01",

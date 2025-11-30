@@ -175,7 +175,7 @@ def backtest_daily(
             # dict
             strategy = {
                 "class": "TopkDropoutStrategy",
-                "module_path": "volaris.contrib.strategy.signal_strategy",
+                "module_path": "volaris.toolkit.strategy.signal_strategy",
                 "kwargs": {
                     "signal": (model, dataset),
                     "topk": 50,

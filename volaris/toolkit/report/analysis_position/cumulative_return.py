@@ -194,8 +194,8 @@ def cumulative_return_graph(
             .. code-block:: python
 
                 from volaris.data import D
-                from volaris.contrib.evaluate import risk_analysis, backtest, long_short_backtest
-                from volaris.contrib.strategy import TopkDropoutStrategy
+                from volaris.toolkit.evaluate import risk_analysis, backtest, long_short_backtest
+                from volaris.toolkit.strategy import TopkDropoutStrategy
 
                 # backtest parameters
                 bparas = {}

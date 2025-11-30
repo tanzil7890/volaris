@@ -288,7 +288,7 @@ def replace_task_handler_with_cache(task: dict, cache_dir: Union[str, Path] = ".
     >>> volaris.auto_init()
     >>> import datetime
     >>> # it is simplified task
-    >>> task = {"dataset": {"kwargs":{'handler': {'class': 'Alpha158', 'module_path': 'volaris.contrib.data.handler', 'kwargs': {'start_time': datetime.date(2008, 1, 1), 'end_time': datetime.date(2020, 8, 1), 'fit_start_time': datetime.date(2008, 1, 1), 'fit_end_time': datetime.date(2014, 12, 31), 'instruments': 'CSI300'}}}}}
+    >>> task = {"dataset": {"kwargs":{'handler': {'class': 'Alpha158', 'module_path': 'volaris.toolkit.data.handler', 'kwargs': {'start_time': datetime.date(2008, 1, 1), 'end_time': datetime.date(2020, 8, 1), 'fit_start_time': datetime.date(2008, 1, 1), 'fit_end_time': datetime.date(2014, 12, 31), 'instruments': 'CSI300'}}}}}
     >>> new_task = replace_task_handler_with_cache(task)
     >>> print(new_task)
     {'dataset': {'kwargs': {'handler': 'file...Alpha158.3584f5f8b4.pkl'}}}
