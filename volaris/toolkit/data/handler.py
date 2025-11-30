@@ -1,6 +1,6 @@
 
 
-from volaris.contrib.data.loader import Alpha158DL, Alpha360DL
+from volaris.toolkit.data.loader import Alpha158DL, Alpha360DL
 from ...data.dataset.handler import DataHandlerLP
 from ...data.dataset.processor import Processor
 from ...utils import get_callable_kwargs

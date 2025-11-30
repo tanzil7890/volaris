@@ -1,6 +1,6 @@
 import fire
 from volaris import auto_init
-from volaris.contrib.rolling.base import Rolling
+from volaris.toolkit.rolling.base import Rolling
 from volaris.utils.mod import find_all_classes
 
 if __name__ == "__main__":

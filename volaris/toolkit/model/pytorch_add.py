@@ -14,9 +14,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from volaris.contrib.model.pytorch_gru import GRUModel
-from volaris.contrib.model.pytorch_lstm import LSTMModel
-from volaris.contrib.model.pytorch_utils import count_parameters
+from volaris.toolkit.model.pytorch_gru import GRUModel
+from volaris.toolkit.model.pytorch_lstm import LSTMModel
+from volaris.toolkit.model.pytorch_utils import count_parameters
 from volaris.data.dataset import DatasetH
 from volaris.data.dataset.handler import DataHandlerLP
 from volaris.log import get_module_logger

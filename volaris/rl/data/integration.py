@@ -11,7 +11,7 @@ from pathlib import Path
 
 import volaris
 from volaris.constant import REG_CN
-from volaris.contrib.ops.high_freq import BFillNan, Cut, Date, DayCumsum, DayLast, FFillNan, IsInf, IsNull, Select
+from volaris.toolkit.ops.high_freq import BFillNan, Cut, Date, DayCumsum, DayLast, FFillNan, IsInf, IsNull, Select
 
 
 def init_volaris(volaris_config: dict) -> None:

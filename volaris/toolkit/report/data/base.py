@@ -8,7 +8,7 @@ Assumptions
 """
 import pandas as pd
 from volaris.log import TimeInspector
-from volaris.contrib.report.utils import sub_fig_generator
+from volaris.toolkit.report.utils import sub_fig_generator
 
 
 class FeaAnalyser:

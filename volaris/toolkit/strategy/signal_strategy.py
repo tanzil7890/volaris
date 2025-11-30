@@ -17,8 +17,8 @@ from volaris.backtest.signal import Signal, create_signal_from
 from volaris.backtest.decision import Order, OrderDir, TradeDecisionWO
 from volaris.log import get_module_logger
 from volaris.utils import get_pre_trading_date, load_dataset
-from volaris.contrib.strategy.order_generator import OrderGenerator, OrderGenWOInteract
-from volaris.contrib.strategy.optimizer import EnhancedIndexingOptimizer
+from volaris.toolkit.strategy.order_generator import OrderGenerator, OrderGenWOInteract
+from volaris.toolkit.strategy.optimizer import EnhancedIndexingOptimizer
 
 
 class BaseSignalStrategy(BaseStrategy, ABC):

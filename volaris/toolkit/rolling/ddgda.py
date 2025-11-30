@@ -6,8 +6,8 @@ from typing import Optional, Union
 import pandas as pd
 import yaml
 
-from volaris.contrib.meta.data_selection.dataset import InternalData, MetaDatasetDS
-from volaris.contrib.meta.data_selection.model import MetaModelDS
+from volaris.toolkit.meta.data_selection.dataset import InternalData, MetaDatasetDS
+from volaris.toolkit.meta.data_selection.model import MetaModelDS
 from volaris.data.dataset.handler import DataHandlerLP
 from volaris.model.meta.task import MetaTask
 from volaris.model.trainer import TrainerR

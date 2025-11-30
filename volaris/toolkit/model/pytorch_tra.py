@@ -24,7 +24,7 @@ from tqdm import tqdm
 from volaris.constant import EPS
 from volaris.log import get_module_logger
 from volaris.model.base import Model
-from volaris.contrib.data.dataset import MTSDatasetH
+from volaris.toolkit.data.dataset import MTSDatasetH
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 

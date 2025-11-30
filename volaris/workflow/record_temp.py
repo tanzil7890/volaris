@@ -9,7 +9,7 @@ from pprint import pprint
 from typing import Union, List, Optional, Dict
 
 from volaris.utils.exceptions import LoadObjectError
-from ..contrib.evaluate import risk_analysis, indicator_analysis
+from ..toolkit.evaluate import risk_analysis, indicator_analysis
 
 from ..data.dataset import DatasetH
 from ..data.dataset.handler import DataHandlerLP
@@ -19,7 +19,7 @@ from ..utils import fill_placeholder, flatten_dict, class_casting, get_date_by_s
 from ..utils.time import Freq
 from ..utils.data import deepcopy_basic_type
 from ..utils.exceptions import VolarisException
-from ..contrib.eva.alpha import calc_ic, calc_long_short_return, calc_long_short_prec
+from ..toolkit.eva.alpha import calc_ic, calc_long_short_return, calc_long_short_prec
 
 
 logger = get_module_logger("workflow", logging.INFO)

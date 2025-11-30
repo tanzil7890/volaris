@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 from typing import Dict, Text, Any
 
-from ...contrib.eva.alpha import calc_ic
+from ...toolkit.eva.alpha import calc_ic
 from ...workflow.record_temp import RecordTemp
 from ...workflow.record_temp import SignalRecord
 from ...data import dataset as volaris_dataset

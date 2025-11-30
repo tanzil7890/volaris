@@ -6,7 +6,7 @@ from joblib import Parallel, delayed  # pylint: disable=E0401
 from typing import Dict, List, Union, Text, Tuple
 from volaris.data.dataset.utils import init_task_handler
 from volaris.data.dataset import DatasetH
-from volaris.contrib.torch import data_to_tensor
+from volaris.toolkit.torch import data_to_tensor
 from volaris.model.meta.task import MetaTask
 from volaris.model.meta.dataset import MetaTaskDataset
 from volaris.model.trainer import TrainerR

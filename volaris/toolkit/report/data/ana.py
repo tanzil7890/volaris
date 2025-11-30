@@ -13,10 +13,10 @@ Here is an example.
 """
 import pandas as pd
 import numpy as np
-from volaris.contrib.report.data.base import FeaAnalyser
-from volaris.contrib.report.utils import sub_fig_generator
+from volaris.toolkit.report.data.base import FeaAnalyser
+from volaris.toolkit.report.utils import sub_fig_generator
 from volaris.utils.paral import datetime_groupby_apply
-from volaris.contrib.eva.alpha import pred_autocorr_all
+from volaris.toolkit.eva.alpha import pred_autocorr_all
 from loguru import logger
 import seaborn as sns
 

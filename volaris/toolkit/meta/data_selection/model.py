@@ -18,7 +18,7 @@ from .dataset import MetaDatasetDS
 from volaris.log import get_module_logger
 from volaris.model.meta.task import MetaTask
 from volaris.data.dataset.weight import Reweighter
-from volaris.contrib.meta.data_selection.net import PredNet
+from volaris.toolkit.meta.data_selection.net import PredNet
 
 logger = get_module_logger("data selection")
 

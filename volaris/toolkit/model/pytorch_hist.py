@@ -19,8 +19,8 @@ from .pytorch_utils import count_parameters
 from ...model.base import Model
 from ...data.dataset import DatasetH
 from ...data.dataset.handler import DataHandlerLP
-from ...contrib.model.pytorch_lstm import LSTMModel
-from ...contrib.model.pytorch_gru import GRUModel
+from ...toolkit.model.pytorch_lstm import LSTMModel
+from ...toolkit.model.pytorch_gru import GRUModel
 
 
 class HIST(Model):

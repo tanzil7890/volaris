@@ -6,20 +6,38 @@ from __future__ import print_function
 
 import numpy as np
 import pandas as pd
-from typing import Text, Union
 import copy
 from ...utils import get_or_create_path
 from ...log import get_module_logger
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.utils.data import DataLoader
+from torch.utils.data import Sampler
 
 from .pytorch_utils import count_parameters
 from ...model.base import Model
-from ...data.dataset import DatasetH
 from ...data.dataset.handler import DataHandlerLP
-from ...contrib.model.pytorch_lstm import LSTMModel
-from ...contrib.model.pytorch_gru import GRUModel
+from ...toolkit.model.pytorch_lstm import LSTMModel
+from ...toolkit.model.pytorch_gru import GRUModel
+
+
+class DailyBatchSampler(Sampler):
+    def __init__(self, data_source):
+        self.data_source = data_source
+        # calculate number of samples in each batch
+        self.daily_count = (
+            pd.Series(index=self.data_source.get_index()).groupby("datetime", group_keys=False).size().values
+        )
+        self.daily_index = np.roll(np.cumsum(self.daily_count), 1)  # calculate begin index of each batch
+        self.daily_index[0] = 0
+
+    def __iter__(self):
+        for idx, count in zip(self.daily_index, self.daily_count):
+            yield np.arange(idx, idx + count)
+
+    def __len__(self):
+        return len(self.data_source)
 
 
 class GATs(Model):
@@ -41,7 +59,7 @@ class GATs(Model):
 
     def __init__(
         self,
-        d_feat=6,
+        d_feat=20,
         hidden_size=64,
         num_layers=2,
         dropout=0.0,
@@ -54,6 +72,7 @@ class GATs(Model):
         model_path=None,
         optimizer="adam",
         GPU=0,
+        n_jobs=10,
         seed=None,
         **kwargs,
     ):
@@ -75,6 +94,7 @@ class GATs(Model):
         self.base_model = base_model
         self.model_path = model_path
         self.device = torch.device("cuda:%d" % (GPU) if torch.cuda.is_available() and GPU >= 0 else "cpu")
+        self.n_jobs = n_jobs
         self.seed = seed
 
         self.logger.info(
@@ -91,7 +111,7 @@ class GATs(Model):
             "\nloss_type : {}"
             "\nbase_model : {}"
             "\nmodel_path : {}"
-            "\ndevice : {}"
+            "\nvisible_GPU : {}"
             "\nuse_GPU : {}"
             "\nseed : {}".format(
                 d_feat,
@@ -106,7 +126,7 @@ class GATs(Model):
                 loss,
                 base_model,
                 model_path,
-                self.device,
+                GPU,
                 self.use_gpu,
                 seed,
             )
@@ -172,20 +192,15 @@ class GATs(Model):
             daily_index, daily_count = zip(*daily_shuffle)
         return daily_index, daily_count
 
-    def train_epoch(self, x_train, y_train):
-        x_train_values = x_train.values
-        y_train_values = np.squeeze(y_train.values)
+    def train_epoch(self, data_loader):
         self.GAT_model.train()
 
-        # organize the train data into daily batches
-        daily_index, daily_count = self.get_daily_inter(x_train, shuffle=True)
+        for data in data_loader:
+            data = data.squeeze()
+            feature = data[:, :, 0:-1].to(self.device)
+            label = data[:, -1, -1].to(self.device)
 
-        for idx, count in zip(daily_index, daily_count):
-            batch = slice(idx, idx + count)
-            feature = torch.from_numpy(x_train_values[batch]).float().to(self.device)
-            label = torch.from_numpy(y_train_values[batch]).float().to(self.device)
-
-            pred = self.GAT_model(feature)
+            pred = self.GAT_model(feature.float())
             loss = self.loss_fn(pred, label)
 
             self.train_optimizer.zero_grad()
@@ -193,25 +208,19 @@ class GATs(Model):
             torch.nn.utils.clip_grad_value_(self.GAT_model.parameters(), 3.0)
             self.train_optimizer.step()
 
-    def test_epoch(self, data_x, data_y):
-        # prepare training data
-        x_values = data_x.values
-        y_values = np.squeeze(data_y.values)
-
+    def test_epoch(self, data_loader):
         self.GAT_model.eval()
 
         scores = []
         losses = []
 
-        # organize the test data into daily batches
-        daily_index, daily_count = self.get_daily_inter(data_x, shuffle=False)
+        for data in data_loader:
+            data = data.squeeze()
+            feature = data[:, :, 0:-1].to(self.device)
+            # feature[torch.isnan(feature)] = 0
+            label = data[:, -1, -1].to(self.device)
 
-        for idx, count in zip(daily_index, daily_count):
-            batch = slice(idx, idx + count)
-            feature = torch.from_numpy(x_values[batch]).float().to(self.device)
-            label = torch.from_numpy(y_values[batch]).float().to(self.device)
-
-            pred = self.GAT_model(feature)
+            pred = self.GAT_model(feature.float())
             loss = self.loss_fn(pred, label)
             losses.append(loss.item())
 
@@ -222,23 +231,28 @@ class GATs(Model):
 
     def fit(
         self,
-        dataset: DatasetH,
+        dataset,
         evals_result=dict(),
         save_path=None,
     ):
-        df_train, df_valid, df_test = dataset.prepare(
-            ["train", "valid", "test"],
-            col_set=["feature", "label"],
-            data_key=DataHandlerLP.DK_L,
-        )
-        if df_train.empty or df_valid.empty:
+        dl_train = dataset.prepare("train", col_set=["feature", "label"], data_key=DataHandlerLP.DK_L)
+        dl_valid = dataset.prepare("valid", col_set=["feature", "label"], data_key=DataHandlerLP.DK_L)
+        if dl_train.empty or dl_valid.empty:
             raise ValueError("Empty data from dataset, please check your dataset config.")
 
-        x_train, y_train = df_train["feature"], df_train["label"]
-        x_valid, y_valid = df_valid["feature"], df_valid["label"]
+        dl_train.config(fillna_type="ffill+bfill")  # process nan brought by dataloader
+        dl_valid.config(fillna_type="ffill+bfill")  # process nan brought by dataloader
+
+        sampler_train = DailyBatchSampler(dl_train)
+        sampler_valid = DailyBatchSampler(dl_valid)
+
+        train_loader = DataLoader(dl_train, sampler=sampler_train, num_workers=self.n_jobs, drop_last=True)
+        valid_loader = DataLoader(dl_valid, sampler=sampler_valid, num_workers=self.n_jobs, drop_last=True)
 
         save_path = get_or_create_path(save_path)
+
         stop_steps = 0
+        train_loss = 0
         best_score = -np.inf
         best_epoch = 0
         evals_result["train"] = []
@@ -246,9 +260,9 @@ class GATs(Model):
 
         # load pretrained base_model
         if self.base_model == "LSTM":
-            pretrained_model = LSTMModel()
+            pretrained_model = LSTMModel(d_feat=self.d_feat, hidden_size=self.hidden_size, num_layers=self.num_layers)
         elif self.base_model == "GRU":
-            pretrained_model = GRUModel()
+            pretrained_model = GRUModel(d_feat=self.d_feat, hidden_size=self.hidden_size, num_layers=self.num_layers)
         else:
             raise ValueError("unknown base model name `%s`" % self.base_model)
 
@@ -271,10 +285,10 @@ class GATs(Model):
         for step in range(self.n_epochs):
             self.logger.info("Epoch%d:", step)
             self.logger.info("training...")
-            self.train_epoch(x_train, y_train)
+            self.train_epoch(train_loader)
             self.logger.info("evaluating...")
-            train_loss, train_score = self.test_epoch(x_train, y_train)
-            val_loss, val_score = self.test_epoch(x_valid, y_valid)
+            train_loss, train_score = self.test_epoch(train_loader)
+            val_loss, val_score = self.test_epoch(valid_loader)
             self.logger.info("train %.6f, valid %.6f" % (train_score, val_score))
             evals_result["train"].append(train_score)
             evals_result["valid"].append(val_score)
@@ -297,29 +311,27 @@ class GATs(Model):
         if self.use_gpu:
             torch.cuda.empty_cache()
 
-    def predict(self, dataset: DatasetH, segment: Union[Text, slice] = "test"):
+    def predict(self, dataset):
         if not self.fitted:
             raise ValueError("model is not fitted yet!")
 
-        x_test = dataset.prepare(segment, col_set="feature")
-        index = x_test.index
+        dl_test = dataset.prepare("test", col_set=["feature", "label"], data_key=DataHandlerLP.DK_I)
+        dl_test.config(fillna_type="ffill+bfill")
+        sampler_test = DailyBatchSampler(dl_test)
+        test_loader = DataLoader(dl_test, sampler=sampler_test, num_workers=self.n_jobs)
         self.GAT_model.eval()
-        x_values = x_test.values
         preds = []
 
-        # organize the data into daily batches
-        daily_index, daily_count = self.get_daily_inter(x_test, shuffle=False)
-
-        for idx, count in zip(daily_index, daily_count):
-            batch = slice(idx, idx + count)
-            x_batch = torch.from_numpy(x_values[batch]).float().to(self.device)
+        for data in test_loader:
+            data = data.squeeze()
+            feature = data[:, :, 0:-1].to(self.device)
 
             with torch.no_grad():
-                pred = self.GAT_model(x_batch).detach().cpu().numpy()
+                pred = self.GAT_model(feature.float()).detach().cpu().numpy()
 
             preds.append(pred)
 
-        return pd.Series(np.concatenate(preds), index=index)
+        return pd.Series(np.concatenate(preds), index=dl_test.get_index())
 
 
 class GATModel(nn.Module):
@@ -371,9 +383,6 @@ class GATModel(nn.Module):
         return att_weight
 
     def forward(self, x):
-        # x: [N, F*T]
-        x = x.reshape(len(x), self.d_feat, -1)  # [N, F, T]
-        x = x.permute(0, 2, 1)  # [N, T, F]
         out, _ = self.rnn(x)
         hidden = out[:, -1, :]
         att_weight = self.cal_attention(hidden, hidden)

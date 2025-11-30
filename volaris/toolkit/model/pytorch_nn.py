@@ -30,7 +30,7 @@ from ...utils import (
 )
 from ...log import get_module_logger
 from ...workflow import R
-from volaris.contrib.meta.data_selection.utils import ICLoss
+from volaris.toolkit.meta.data_selection.utils import ICLoss
 from torch.nn import DataParallel
 
 

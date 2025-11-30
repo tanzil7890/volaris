@@ -10,7 +10,7 @@ from volaris.config import REG_CN
 from volaris.utils import init_instance_by_config
 from volaris.data.dataset.handler import DataHandlerLP
 from volaris.data.data import Cal
-from volaris.contrib.ops.high_freq import get_calendar_day, DayLast, FFillNan, BFillNan, Date, Select, IsNull, IsInf, Cut
+from volaris.toolkit.ops.high_freq import get_calendar_day, DayLast, FFillNan, BFillNan, Date, Select, IsNull, IsInf, Cut
 import pickle as pkl
 from joblib import Parallel, delayed
 
